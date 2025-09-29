@@ -1,0 +1,103 @@
+2025-09-29 10:35:29,395 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-09-29 10:35:29,396 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-09-29 10:35:29,396 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-09-29 10:35:29,396 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-09-29 10:35:29,397 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-09-29 10:35:29,397 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-29 10:35:32,441 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-09-29 10:35:32,452 - mcp.server.lowlevel.server - DEBUG - Received message: 1 validation error for JSONRPCMessage
+  Invalid JSON: expected value at line 1 column 1 [type=json_invalid, input_value='& C:/Users/Chara/AppData...om/zoom_mcp_server.py\n', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/json_invalid
+2025-09-29 10:38:35,269 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-09-29 10:38:35,269 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-09-29 10:38:35,270 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-09-29 10:38:35,270 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-09-29 10:38:35,270 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-09-29 10:38:35,271 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-29 10:38:36,697 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-09-29 10:39:20,337 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-09-29 10:39:20,338 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-09-29 10:39:20,339 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-09-29 10:39:20,339 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-09-29 10:39:20,339 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-09-29 10:39:20,339 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-29 10:39:21,759 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-09-29 10:59:33,862 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-09-29 10:59:33,863 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-09-29 10:59:33,863 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-09-29 10:59:33,863 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-09-29 10:59:33,863 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-09-29 10:59:33,863 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-29 10:59:35,398 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-09-29 11:02:57,687 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-09-29 11:02:57,687 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-09-29 11:02:57,687 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-09-29 11:02:57,687 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-09-29 11:02:57,687 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-09-29 11:02:57,688 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-29 11:02:59,168 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-09-29 11:02:59,185 - mcp.server.lowlevel.server - DEBUG - Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
+2025-09-29 11:02:59,187 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000001DB2C152850>
+2025-09-29 11:02:59,187 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-09-29 11:02:59,188 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type ListToolsRequest
+2025-09-29 11:02:59,188 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-09-29 11:03:00,597 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-09-29 11:03:00,598 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-09-29 11:03:00,598 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-09-29 11:03:00,598 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-09-29 11:03:00,598 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-09-29 11:03:00,598 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-29 11:03:02,141 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-09-29 11:03:02,157 - mcp.server.lowlevel.server - DEBUG - Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
+2025-09-29 11:03:02,158 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000001EE0C1D2850>
+2025-09-29 11:03:02,158 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-09-29 11:03:02,158 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type ListToolsRequest
+2025-09-29 11:03:02,159 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-09-29 11:03:38,528 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-09-29 11:03:38,529 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-09-29 11:03:38,529 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-09-29 11:03:38,529 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-09-29 11:03:38,529 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-09-29 11:03:38,529 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-29 11:03:40,000 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-09-29 11:03:40,011 - mcp.server.lowlevel.server - DEBUG - Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
+2025-09-29 11:03:40,013 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000023F9B2F2850>
+2025-09-29 11:03:40,014 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-09-29 11:03:40,014 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type ListToolsRequest
+2025-09-29 11:03:40,014 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-09-29 11:03:58,316 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-09-29 11:03:58,316 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-09-29 11:03:58,316 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-09-29 11:03:58,316 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-09-29 11:03:58,317 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-09-29 11:03:58,317 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-29 11:03:59,707 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-09-29 11:03:59,715 - mcp.server.lowlevel.server - DEBUG - Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
+2025-09-29 11:03:59,716 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000001B517366850>
+2025-09-29 11:03:59,717 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-09-29 11:03:59,717 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type ListToolsRequest
+2025-09-29 11:03:59,717 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-09-29 11:04:17,417 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000001B517366990>
+2025-09-29 11:04:17,417 - mcp.server.lowlevel.server - INFO - Processing request of type ListResourceTemplatesRequest
+2025-09-29 11:04:17,418 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-09-29 11:04:17,421 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000001B5173035C0>
+2025-09-29 11:04:17,421 - mcp.server.lowlevel.server - INFO - Processing request of type ListResourcesRequest
+2025-09-29 11:04:17,422 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type ListResourcesRequest
+2025-09-29 11:04:17,428 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-09-29 14:31:07,111 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-09-29 14:31:07,112 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-09-29 14:31:07,113 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-09-29 14:31:07,113 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-09-29 14:31:07,113 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-09-29 14:31:07,114 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-29 14:31:08,895 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-09-29 14:37:18,538 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-09-29 14:37:18,538 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-09-29 14:37:18,539 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-09-29 14:37:18,539 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-09-29 14:37:18,539 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-09-29 14:37:18,539 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-09-29 14:37:18,542 - zoom-mcp-server - INFO - Starting zoom-webinar-mcp-server v3.0.0
+2025-09-29 14:37:20,217 - zoom-mcp-server - INFO - API manager initialized successfully
+2025-09-29 14:37:20,218 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-09-29 14:37:20,226 - zoom-mcp-server - INFO - Server started successfully
