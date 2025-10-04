@@ -101,3 +101,16 @@
 2025-09-29 14:37:20,217 - zoom-mcp-server - INFO - API manager initialized successfully
 2025-09-29 14:37:20,218 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
 2025-09-29 14:37:20,226 - zoom-mcp-server - INFO - Server started successfully
+2025-10-01 11:03:01,205 - mcp.server.lowlevel.server - DEBUG - Initializing server 'zoom-webinar-mcp-server'
+2025-10-01 11:03:01,207 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListResourcesRequest
+2025-10-01 11:03:01,207 - mcp.server.lowlevel.server - DEBUG - Registering handler for ReadResourceRequest
+2025-10-01 11:03:01,207 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-10-01 11:03:01,208 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-10-01 11:03:01,208 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-10-01 11:03:01,211 - zoom-mcp-server - INFO - Starting zoom-webinar-mcp-server v3.0.0
+2025-10-01 11:03:02,911 - zoom-mcp-server - INFO - API manager initialized successfully
+2025-10-01 11:03:02,911 - zoom-mcp-server - INFO - Auto-configured Zoom API from environment variables
+2025-10-01 11:03:02,917 - zoom-mcp-server - INFO - Server started successfully
+2025-10-01 11:03:16,681 - zoom-mcp-server - INFO - Cleaning up resources...
+2025-10-01 11:03:16,681 - zoom-mcp-server - INFO - API manager cleaned up successfully
+2025-10-01 11:03:16,685 - zoom-mcp-server - INFO - Server shutdown complete
