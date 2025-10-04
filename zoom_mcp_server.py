@@ -1,7 +1,7 @@
 """
 Zoom Webinar MCP Server - Modular Architecture
 Complete server implementation using modular HTTP method architecture
-Version: 3.0.0
+Version: 3.0.1
 """
 
 import asyncio
@@ -20,7 +20,7 @@ from mcp.types import Resource, Tool, TextContent
 
 # Constants
 SERVER_NAME = "zoom-webinar-mcp-server"
-SERVER_VERSION = "3.0.0"
+SERVER_VERSION = "3.0.1"
 DEFAULT_PAGE_SIZE = 30
 DEFAULT_DURATION = 60
 DEFAULT_TIMEZONE = "UTC"
@@ -348,9 +348,27 @@ async def handle_list_tools() -> List[Tool]:
                 "properties": {
                     "user_id": {"type": "string", "description": "User ID"},
                     "page_size": {"type": "integer", "description": "Number of results per page", "default": DEFAULT_PAGE_SIZE},
-                    "page_number": {"type": "integer", "description": "Page number", "default": 1}
+                    "page_number": {"type": "integer", "description": "Page number", "default": 1},
+                    "type": {
+                        "type": "string", 
+                        "description": "Type of webinars to retrieve: 'scheduled' (all valid previous, live, and upcoming) or 'upcoming' (upcoming and live only)", 
+                        "default": "scheduled",
+                        "enum": ["scheduled", "upcoming"]
+                    }
                 },
                 "required": ["user_id"]
+            }
+    ),
+        Tool(
+            name="list_webinar_qa",
+            description="Get Q&A questions and answers from a past webinar",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "webinar_id": {"type": "string", "description": "Webinar ID"},
+                    "occurrence_id": {"type": "string", "description": "Occurrence ID for recurring webinars"}
+                },
+                "required": ["webinar_id"]
             }
         ),
         Tool(
@@ -381,7 +399,7 @@ async def handle_list_tools() -> List[Tool]:
         ),
         Tool(
             name="list_webinar_registrants", 
-            description="List webinar registrants",
+            description="List webinar registrants with their IDs for management",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -390,6 +408,18 @@ async def handle_list_tools() -> List[Tool]:
                     "page_size": {"type": "integer", "description": "Number of results per page", "default": DEFAULT_PAGE_SIZE}
                 },
                 "required": ["webinar_id"]
+            }
+        ),
+        Tool(
+            name="find_registrant_by_email",
+            description="Find a registrant ID by their email address - useful before deleting",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "webinar_id": {"type": "string", "description": "Webinar ID"},
+                    "email": {"type": "string", "description": "Registrant email address"}
+                },
+                "required": ["webinar_id", "email"]
             }
         ),
         Tool(
@@ -432,12 +462,12 @@ async def handle_list_tools() -> List[Tool]:
         ),
         Tool(
             name="delete_webinar_registrant",
-            description="Delete a webinar registrant",
+            description="Delete a webinar registrant - use list_webinar_registrants or find_registrant_by_email to get the registrant_id first",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "webinar_id": {"type": "string", "description": "Webinar ID"},
-                    "registrant_id": {"type": "string", "description": "Registrant ID to delete"}
+                    "registrant_id": {"type": "string", "description": "Registrant ID to delete (get this from list_webinar_registrants)"}
                 },
                 "required": ["webinar_id", "registrant_id"]
             }
@@ -741,19 +771,56 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
             )]
         
         # GET methods - Information retrieval tools
+        elif name == "list_webinar_qa":
+            qa_data = await api_manager.list_webinar_qa(
+                arguments["webinar_id"],
+                arguments.get("occurrence_id")
+            )
+            participants = qa_data.get("questions", [])
+        
+            if not participants:
+                result = f"No Q&A data found for webinar {arguments['webinar_id']}"
+            else:
+                total_questions = sum(len(p.get('question_details', [])) for p in participants)
+                lines = [f"Found {total_questions} Q&A items from {len(participants)} participant(s):", ""]
+            
+                q_number = 1
+                for participant in participants:
+                    participant_name = participant.get('name') or "Anonymous"
+                    participant_email = participant.get('email') or "N/A"
+                
+                    for detail in participant.get('question_details', []):
+                        question_text = detail.get('question') or "[Question text not available]"
+                        answer_text = detail.get('answer') if detail.get('answer') else "Not answered"
+                    
+                        lines.extend([
+                            f"Q{q_number}: {question_text}",
+                            f"   Asked by: {participant_name} ({participant_email})",
+                            f"   Answer: {answer_text}",
+                            ""
+                        ])
+                        q_number += 1
+                
+                result = format_list_output(lines)
+        
+            return [TextContent(type="text", text=result)]
+
         elif name == "list_webinars":
             webinars = await api_manager.list_webinars(
                 arguments["user_id"],
                 arguments.get("page_size", DEFAULT_PAGE_SIZE),
-                arguments.get("page_number", 1)
+                arguments.get("page_number", 1),
+                arguments.get("type", "scheduled")
             )
             
             webinar_list = webinars.get("webinars", [])
+            webinar_type = arguments.get("type", "scheduled")
+            
             if not webinar_list:
-                result = f"No webinars found for user {arguments['user_id']}"
+                result = f"No {webinar_type} webinars found for user {arguments['user_id']}"
             else:
-                lines = [f"Found {len(webinar_list)} webinars:", ""]
-                for webinar in webinar_list[:5]:
+                lines = [f"Found {len(webinar_list)} {webinar_type} webinars:", ""]
+                for webinar in webinar_list:
                     lines.extend([
                         f"• {webinar.get('topic')} (ID: {webinar.get('id')})",
                         f"  Start: {webinar.get('start_time')}",
@@ -761,10 +828,9 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
                         ""
                     ])
                 
-                if len(webinar_list) > 5:
-                    lines.append(f"... and {len(webinar_list) - 5} more webinars")
+                result = format_list_output(lines)
             
-            return [TextContent(type="text", text=format_list_output(lines))]
+            return [TextContent(type="text", text=result)]
         
         elif name == "get_webinar":
             webinar = await api_manager.get_webinar(
@@ -823,14 +889,59 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
                 lines.extend([
                     f"• {registrant.get('first_name')} {registrant.get('last_name')}",
                     f"  Email: {registrant.get('email')}",
+                    f"  Registrant ID: {registrant.get('id')}",
                     f"  Status: {registrant.get('status')}",
+                    f"  Created: {registrant.get('create_time', 'N/A')}",
                     ""
                 ])
             
             if len(registrant_list) > 10:
                 lines.append(f"... and {len(registrant_list) - 10} more registrants")
             
+            lines.append("")
+            lines.append("💡 To delete a registrant, use the 'Registrant ID' shown above")
+            
             return [TextContent(type="text", text=format_list_output(lines))]
+        
+        elif name == "find_registrant_by_email":
+            registrants = await api_manager.list_webinar_registrants(
+                arguments["webinar_id"],
+                status="approved",
+                page_size=300  # Get more results to search
+            )
+            
+            registrant_list = registrants.get("registrants", [])
+            search_email = arguments["email"].lower()
+            
+            found = None
+            for registrant in registrant_list:
+                if registrant.get('email', '').lower() == search_email:
+                    found = registrant
+                    break
+            
+            if found:
+                lines = [
+                    "Registrant Found!",
+                    "",
+                    f"Name: {found.get('first_name')} {found.get('last_name')}",
+                    f"Email: {found.get('email')}",
+                    f"Registrant ID: {found.get('id')}",
+                    f"Status: {found.get('status')}",
+                    f"Created: {found.get('create_time', 'N/A')}",
+                    "",
+                    "To delete this registrant, use:",
+                    f"  Tool: delete_webinar_registrant",
+                    f"  webinar_id: {arguments['webinar_id']}",
+                    f"  registrant_id: {found.get('id')}"
+                ]
+                return [TextContent(type="text", text=format_list_output(lines))]
+            else:
+                return [TextContent(
+                    type="text",
+                    text=f"No registrant found with email: {arguments['email']}\n"
+                         f"in webinar {arguments['webinar_id']}\n\n"
+                         f"Use 'list_webinar_registrants' to see all registrants."
+                )]
         
         elif name == "list_panelists":
             panelists = await api_manager.list_panelists(arguments["webinar_id"])
@@ -882,7 +993,7 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
             
             return [TextContent(
                 type="text",
-                text=f"Registrant {arguments['registrant_id']} deleted from webinar {arguments['webinar_id']}"
+                text=f"Registrant {arguments['registrant_id']} deleted successfully from webinar {arguments['webinar_id']}"
             )]
         
         # PATCH methods - Update tools

@@ -27,12 +27,34 @@ class ZoomGetMethods:
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.http_client.aclose()
     
-    async def list_webinars(self, user_id: str, page_size: int = 30, page_number: int = 1) -> Dict[str, Any]:
-        """List webinars for a user"""
+    async def list_webinars(
+        self, 
+        user_id: str, 
+        page_size: int = 30, 
+        page_number: int = 1,
+        webinar_type: str = "scheduled"
+    ) -> Dict[str, Any]:
+        """
+        List webinars for a user
+        
+        Args:
+            user_id: The user ID to list webinars for
+            page_size: Number of results per page (default: 30)
+            page_number: Page number (default: 1)
+            webinar_type: Type of webinars to retrieve (default: "scheduled")
+                - "scheduled": All valid previous (unexpired), live, and upcoming scheduled webinars
+                - "upcoming": All upcoming webinars, including live webinars
+        """
         try:
+            # Validate webinar_type
+            valid_types = ["scheduled", "upcoming"]
+            if webinar_type not in valid_types:
+                raise ValueError(f"Invalid webinar_type: {webinar_type}. Must be one of {valid_types}")
+            
             headers = await self.auth.get_auth_headers()
             
             params = {
+                "type": webinar_type,
                 "page_size": page_size,
                 "page_number": page_number
             }
@@ -47,7 +69,7 @@ class ZoomGetMethods:
                 raise Exception(f"Failed to list webinars: {response.status_code} - {response.text}")
             
             result = response.json()
-            logger.info(f"Retrieved {len(result.get('webinars', []))} webinars for user: {user_id}")
+            logger.info(f"Retrieved {len(result.get('webinars', []))} webinars (type={webinar_type}) for user: {user_id}")
             
             return result
             
@@ -144,7 +166,7 @@ class ZoomGetMethods:
             logger.error(f"Error listing participants: {e}")
             raise
     
-    async def list_webinar_qa(self, webinar_uuid: str, occurrence_id: str = None) -> Dict[str, Any]:
+    async def list_webinar_qa(self, webinar_id: str, occurrence_id: str = None) -> Dict[str, Any]:
         """List Q&A of a past webinar"""
         try:
             headers = await self.auth.get_auth_headers()
@@ -154,7 +176,7 @@ class ZoomGetMethods:
                 params["occurrence_id"] = occurrence_id
             
             response = await self.http_client.get(
-                f"{self.auth.config.base_url}/past_webinars/{webinar_uuid}/qa",
+                f"{self.auth.config.base_url}/past_webinars/{webinar_id}/qa",
                 headers=headers,
                 params=params
             )
@@ -163,7 +185,7 @@ class ZoomGetMethods:
                 raise Exception(f"Failed to list Q&A: {response.status_code} - {response.text}")
             
             result = response.json()
-            logger.info(f"Retrieved Q&A for webinar: {webinar_uuid}")
+            logger.info(f"Retrieved Q&A for webinar: {webinar_id}")
             
             return result
             

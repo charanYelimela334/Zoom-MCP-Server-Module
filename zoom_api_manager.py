@@ -151,9 +151,9 @@ class ZoomAPIManager:
         return await self.post_methods.add_webinar_panelist(webinar_id, panelist)
     
     # GET Methods - Information Retrieval
-    async def list_webinars(self, user_id: str, page_size: int = 30, page_number: int = 1) -> Dict[str, Any]:
+    async def list_webinars(self, user_id: str, page_size: int = 30, page_number: int = 1, webinar_type: str = "scheduled") -> Dict[str, Any]:
         """List webinars for a user"""
-        return await self.get_methods.list_webinars(user_id, page_size, page_number)
+        return await self.get_methods.list_webinars(user_id, page_size, page_number, webinar_type)
     
     async def get_webinar(self, webinar_id: str, occurrence_id: str = None, show_previous_occurrences: bool = False) -> Dict[str, Any]:
         """Get details of a specific webinar"""
@@ -167,9 +167,9 @@ class ZoomAPIManager:
         """List participants of a past webinar"""
         return await self.get_methods.list_webinar_participants(webinar_uuid, occurrence_id, page_size, page_number)
     
-    async def list_webinar_qa(self, webinar_uuid: str, occurrence_id: str = None) -> Dict[str, Any]:
+    async def list_webinar_qa(self, webinar_id: str, occurrence_id: str = None) -> Dict[str, Any]:
         """List Q&A of a past webinar"""
-        return await self.get_methods.list_webinar_qa(webinar_uuid, occurrence_id)
+        return await self.get_methods.list_webinar_qa(webinar_id, occurrence_id)
     
     async def list_panelists(self, webinar_id: str) -> Dict[str, Any]:
         """List panelists of a webinar"""
