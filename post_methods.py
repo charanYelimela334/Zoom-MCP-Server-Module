@@ -5,7 +5,7 @@ Handles all POST operations for webinars
 """
 
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
 import httpx
@@ -15,13 +15,44 @@ from auth import ZoomAuth
 
 logger = logging.getLogger("zoom-post")
 
+# IST timezone (UTC+5:30)
+IST = timezone(timedelta(hours=5, minutes=30))
+
+
+def convert_to_utc_iso(dt_str: str, from_tz: timezone = IST) -> str:
+    """
+    Convert a datetime string in the specified timezone to UTC ISO format.
+    
+    Args:
+        dt_str: ISO format datetime string (with or without timezone info)
+        from_tz: Timezone to assume if not in the string (default: IST)
+    
+    Returns:
+        ISO format string with Z suffix (UTC)
+    """
+    try:
+        # Try parsing with timezone info
+        if 'Z' in dt_str or '+' in dt_str or dt_str.count('-') > 2:
+            dt = datetime.fromisoformat(dt_str.replace('Z', '+00:00'))
+        else:
+            # Parse as naive datetime and assume the from_tz
+            dt = datetime.fromisoformat(dt_str)
+            dt = dt.replace(tzinfo=from_tz)
+        
+        # Convert to UTC
+        dt_utc = dt.astimezone(timezone.utc)
+        return dt_utc.strftime('%Y-%m-%dT%H:%M:%SZ')
+    except Exception as e:
+        logger.warning(f"Failed to convert timezone for '{dt_str}': {e}")
+        return dt_str
+
 
 class WebinarDetails(BaseModel):
     """Webinar creation details"""
     topic: str
     start_time: Optional[str] = None
     duration: int = 60
-    timezone: str = "UTC"
+    timezone: str = "Asia/Kolkata"  # Changed default to IST
     agenda: str = ""
     password: str = ""
     host_video: bool = True
@@ -103,16 +134,21 @@ class ZoomPostMethods:
         try:
             headers = await self.auth.get_auth_headers()
             
-            # Set default start time if not provided
+            # Set default start time if not provided (1 hour from now in IST, converted to UTC)
             if not webinar_details.start_time:
-                webinar_details.start_time = (datetime.now() + timedelta(hours=1)).isoformat() + "Z"
+                now_ist = datetime.now(IST)
+                future_ist = now_ist + timedelta(hours=1)
+                webinar_details.start_time = future_ist.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+            else:
+                # Convert provided time to UTC if it's not already
+                webinar_details.start_time = convert_to_utc_iso(webinar_details.start_time)
             
             webinar_data = {
                 "topic": webinar_details.topic,
                 "type": 5,  # Scheduled webinar
                 "start_time": webinar_details.start_time,
                 "duration": webinar_details.duration,
-                "timezone": webinar_details.timezone,
+                "timezone": webinar_details.timezone,  # This tells Zoom to display times in this TZ
                 "agenda": webinar_details.agenda,
                 "password": webinar_details.password,
                 "settings": {
@@ -146,6 +182,7 @@ class ZoomPostMethods:
                 "topic": webinar.get("topic"),
                 "start_time": webinar.get("start_time"),
                 "duration": webinar.get("duration"),
+                "timezone": webinar.get("timezone"),
                 "join_url": webinar.get("join_url"),
                 "start_url": webinar.get("start_url"),
                 "registration_url": webinar.get("registration_url")
@@ -160,10 +197,13 @@ class ZoomPostMethods:
         try:
             headers = await self.auth.get_auth_headers()
             
+            # Convert start_time to UTC if needed
+            start_time_utc = convert_to_utc_iso(webinar_details.start_time)
+            
             webinar_data = {
                 "topic": webinar_details.topic,
                 "type": 9,  # Recurring webinar with fixed time
-                "start_time": webinar_details.start_time,
+                "start_time": start_time_utc,
                 "duration": webinar_details.duration,
                 "timezone": webinar_details.timezone,
                 "agenda": webinar_details.agenda,
@@ -201,7 +241,8 @@ class ZoomPostMethods:
             if webinar_details.recurrence.end_times:
                 recurrence["end_times"] = webinar_details.recurrence.end_times
             elif webinar_details.recurrence.end_date_time:
-                recurrence["end_date_time"] = webinar_details.recurrence.end_date_time
+                # Convert end_date_time to UTC as well
+                recurrence["end_date_time"] = convert_to_utc_iso(webinar_details.recurrence.end_date_time)
             else:
                 # Default to 10 occurrences if no end condition specified
                 recurrence["end_times"] = 10
